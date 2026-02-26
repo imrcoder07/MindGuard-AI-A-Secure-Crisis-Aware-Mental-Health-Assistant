@@ -1,4 +1,4 @@
-                                                            # 🧠 MindGuard AI
+# 🧠 MindGuard AI
 
 ### Secure Crisis-Aware Mental Health Assistant
 
