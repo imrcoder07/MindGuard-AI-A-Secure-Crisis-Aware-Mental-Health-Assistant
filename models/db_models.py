@@ -65,7 +65,7 @@ class Message(db.Model):
         nullable=False
     )
 
-    sender = db.Column(db.Enum("user", "assistant", name="sender_enum"), nullable=False)
+    sender = db.Column(db.Enum("user", "assistant", name="sender_enum"), create_type=False, nullable=False)
     content = db.Column(db.Text, nullable=False)
     emotion = db.Column(db.String(50))
     risk_score = db.Column(db.Integer, default=0)
