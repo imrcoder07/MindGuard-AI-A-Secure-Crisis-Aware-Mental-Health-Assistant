@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from services.crisis_engine import analyze_risk
 from services.llama_service import generate_response
+from extensions import db
 from services.memory_manager import (
     create_conversation,
     save_message,
@@ -185,3 +186,25 @@ def get_messages(conversation_id):
         "conversation_id": conversation_id,
         "messages": messages
     })
+
+
+# -------------------------------------------------------
+# DELETE CONVERSATION
+# -------------------------------------------------------
+
+@chat_bp.route("/conversations/<int:conversation_id>", methods=["DELETE"])
+@login_required
+def delete_conversation(conversation_id):
+
+    conversation = Conversation.query.filter_by(
+        id=conversation_id,
+        user_id=current_user.id
+    ).first()
+
+    if not conversation:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 403
+
+    db.session.delete(conversation)
+    db.session.commit()
+
+    return jsonify({"status": "success"})
