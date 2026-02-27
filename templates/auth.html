@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Serenity AI - Secure Login</title>
+    <title>MindGuard AI - Secure Authentication</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -22,7 +22,7 @@
             border-radius: 24px;
             border: 1px solid rgba(139, 92, 246, 0.3);
             backdrop-filter: blur(15px);
-            width: 350px;
+            width: 360px;
             text-align: center;
         }
 
@@ -43,6 +43,10 @@
             box-sizing: border-box;
         }
 
+        input::placeholder {
+            color: #cbd5e1;
+        }
+
         button {
             width: 100%;
             padding: 12px;
@@ -53,6 +57,11 @@
             border: none;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #6d28d9;
         }
 
         .toggle {
@@ -61,51 +70,151 @@
             color: #a78bfa;
             cursor: pointer;
         }
+
+        .error-msg {
+            color: #f87171;
+            font-size: 13px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
 <body>
     <div class="auth-card">
         <h2 id="title">Login</h2>
+
         <form id="authForm">
+
             <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
+
+            <input type="email" id="email" placeholder="Email" style="display:none;">
+
+            <input type="password" id="password" placeholder="Password (min 8 characters)" required>
+
+            <input type="password" id="confirmPassword" placeholder="Confirm Password"
+                style="display:none;">
+
             <button type="submit" id="submitBtn">Sign In</button>
+
+            <div class="error-msg" id="errorMsg"></div>
+
         </form>
-        <p class="toggle" onclick="toggleMode()" id="toggleText">Don't have an account? Register</p>
+
+        <p class="toggle" onclick="toggleMode()" id="toggleText">
+            Don't have an account? Register
+        </p>
     </div>
 
     <script>
+
         let isLogin = true;
+
         function toggleMode() {
             isLogin = !isLogin;
-            document.getElementById('title').innerText = isLogin ? 'Login' : 'Create Account';
-            document.getElementById('submitBtn').innerText = isLogin ? 'Sign In' : 'Sign Up';
-            document.getElementById('toggleText').innerText = isLogin ? "Don't have an account? Register" : "Already have an account? Login";
+
+            document.getElementById("title").innerText =
+                isLogin ? "Login" : "Create Account";
+
+            document.getElementById("submitBtn").innerText =
+                isLogin ? "Sign In" : "Sign Up";
+
+            document.getElementById("toggleText").innerText =
+                isLogin
+                    ? "Don't have an account? Register"
+                    : "Already have an account? Login";
+
+            document.getElementById("email").style.display =
+                isLogin ? "none" : "block";
+
+            document.getElementById("confirmPassword").style.display =
+                isLogin ? "none" : "block";
+
+            document.getElementById("errorMsg").innerText = "";
         }
 
-        document.getElementById('authForm').onsubmit = async (e) => {
+        document.getElementById("authForm").onsubmit = async (e) => {
             e.preventDefault();
-            const endpoint = isLogin ? '/login' : '/register';
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: document.getElementById('username').value,
-                    password: document.getElementById('password').value
-                })
-            });
-            const data = await response.json();
-            if (data.success) {
-                // Clear old session welcome state
-                sessionStorage.removeItem("hasBeenWelcomed");
 
-                // Redirect after clearing
-                window.location.href = "/";
+            const errorMsg = document.getElementById("errorMsg");
+            errorMsg.innerText = "";
+
+            const username = document
+                .getElementById("username")
+                .value.trim();
+
+            const email = document
+                .getElementById("email")
+                .value.trim()
+                .toLowerCase();
+
+            const password = document
+                .getElementById("password")
+                .value;
+
+            const confirmPassword = document
+                .getElementById("confirmPassword")
+                .value;
+
+            if (!isLogin) {
+
+                if (username.length < 3) {
+                    errorMsg.innerText =
+                        "Username must be at least 3 characters.";
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!emailRegex.test(email)) {
+                    errorMsg.innerText =
+                        "Please enter a valid email address.";
+                    return;
+                }
+
+                if (password.length < 8) {
+                    errorMsg.innerText =
+                        "Password must be at least 8 characters long.";
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    errorMsg.innerText =
+                        "Passwords do not match.";
+                    return;
+                }
             }
-            else alert(data.error);
+
+            const endpoint = isLogin ? "/login" : "/register";
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    sessionStorage.removeItem("hasBeenWelcomed");
+                    window.location.href = "/";
+                } else {
+                    errorMsg.innerText =
+                        data.error || "Authentication failed.";
+                }
+
+            } catch (err) {
+                errorMsg.innerText =
+                    "Server error. Please try again.";
+            }
         };
+
     </script>
+
 </body>
 
 </html>
