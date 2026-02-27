@@ -3,68 +3,82 @@
 ### Secure Crisis-Aware Mental Health Assistant
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-v1.0.0-blue" />
+  <img src="https://img.shields.io/badge/version-v1.2.0-blue" />
   <img src="https://img.shields.io/badge/backend-Flask-red" />
   <img src="https://img.shields.io/badge/database-PostgreSQL-blue" />
-  <img src="https://img.shields.io/badge/authentication-Flask--Login-green" />
-  <img src="https://img.shields.io/badge/AI-Llama%203.x-purple" />
+  <img src="https://img.shields.io/badge/ai-Meta--Llama--3.2--3B--Instruct-purple" />
+  <img src="https://img.shields.io/badge/deployment-Render-success" />
+  <img src="https://img.shields.io/badge/container-Docker-blue" />
   <img src="https://img.shields.io/badge/security-Zero--Trust-brightgreen" />
 </p>
 
 ---
 
-## 📌 Version
+## 🌐 Live Deployment
 
-**v1.0.0 — Stable Release**
+🚀 **Production URL:**
+[https://mindguard-ai-a-secure-crisis-aware.onrender.com](https://mindguard-ai-a-secure-crisis-aware.onrender.com)
+
+Deployed on **Render Cloud** using Docker, Gunicorn, and managed PostgreSQL.
 
 ---
 
-## 📑 Table of Contents
+# 🖼 Application Preview
 
-* [Overview](#-overview)
-* [Why This Project Matters](#-why-this-project-matters)
-* [Core Features](#-core-features)
-* [System Architecture](#-system-architecture)
-* [Database Schema](#-database-schema)
-* [Technology Stack](#-technology-stack)
-* [Installation](#-installation)
-* [Environment Configuration](#-environment-configuration)
-* [Running the Application](#-running-the-application)
-* [Application Flow](#-application-flow)
-* [Crisis Handling Strategy](#-crisis-handling-strategy)
-* [Security Considerations](#-security-considerations)
-* [Future Enhancements](#-future-enhancements)
-* [Author](#-author)
-* [Disclaimer](#-disclaimer)
+## Welcome Screen
+
+<p align="center">
+  <img src="images/welcome.png" width="900" alt="Welcome Overlay"/>
+</p>
+
+---
+
+## 💬 Chat Interface
+
+<p align="center">
+  <img src="images/chatbot.png" width="900" alt="Chat Interface"/>
+</p>
+
+---
+
+## 🔐 Authentication Interface
+
+<p align="center">
+  <img src="images/login.png" width="700" alt="Login and Registration Interface"/>
+  <img src="images/Register.png" width="700" alt="Login and Registration Interface"/>
+</p>
+
 
 ---
 
 ## 📌 Overview
 
-MindGuard AI is a privacy-focused, crisis-aware conversational AI system engineered to provide empathetic mental health support while enforcing strict security boundaries and responsible AI behavior.
+MindGuard AI is a cloud-deployed, crisis-aware conversational AI system designed to provide empathetic mental health support while enforcing strict security controls and structured AI safety boundaries.
 
-Rather than functioning as a simple chatbot, the platform integrates structured risk detection, crisis override mechanisms, validated LLM outputs, and secure multi-user isolation to ensure that sensitive user conversations remain protected and context-aware.
+The platform integrates:
 
-The system combines:
-
-* Secure authentication
-* Persistent PostgreSQL-backed chat memory
-* Emotion classification and risk scoring
-* Controlled LLM integration
-* Zero-trust conversation isolation
+* Secure multi-user authentication
+* Crisis risk analysis before LLM invocation
+* Controlled LLM response validation
+* PostgreSQL-backed conversation memory
+* Zero-trust data isolation
+* Dockerized production deployment
 
 ---
 
-## 🎯 Why This Project Matters
+## 🏗 System Architecture
 
-Mental health AI systems must go beyond text generation. They require:
+<p align="center">
+  <img src="images/system-architecture.png" width="950" alt="System Architecture Diagram"/>
+</p>
 
-* Safety-aligned response handling
-* Structured risk-awareness
-* Privacy-centric user isolation
-* Controlled AI output validation
+### High-Level Processing Flow
 
-MindGuard AI demonstrates how conversational AI can be engineered responsibly by combining backend security, relational database integrity, structured AI pipelines, and risk-aware design into a scalable architecture.
+```
+User → Authentication → Crisis Engine → 
+LLM (Meta-Llama-3.2-3B-Instruct via HuggingFace) → 
+JSON Validation → PostgreSQL → Response
+```
 
 ---
 
@@ -72,53 +86,42 @@ MindGuard AI demonstrates how conversational AI can be engineered responsibly by
 
 ### 🔐 Secure Authentication
 
-* User registration & login (Flask-Login)
+* Flask-Login session management
+* Email-based registration
 * Secure password hashing (Werkzeug)
-* Session-based access control
-* Conversation ownership enforcement
-
-### 🧠 Risk-Aware Conversational AI
-
-* Emotion classification (sadness, anxiety, fear, frustration, etc.)
-* Risk scoring engine
-* Crisis override protection layer
-* Structured JSON validation of AI outputs
-* Deterministic inference pipeline (controlled temperature)
-
-### 🗄 Persistent Conversation Storage
-
-* PostgreSQL relational schema
-* User-to-conversation mapping
-* Timestamp-based dynamic resurfacing
-* Secure DB-level ownership filtering
-
-### 🛡 Zero-Trust Architecture
-
-* Route-level validation
-* Database-level ownership filtering
-* Defensive JSON parsing
-* Controlled model fallback mechanism
-* Environment-based configuration
+* Conversation ownership validation
+* Zero-trust route protection
 
 ---
 
-## 🏗 System Architecture
+### 🧠 Crisis-Aware AI Processing
 
-```
-User
-  ↓
-Flask Backend
-  ↓
-Crisis Risk Engine
-  ↓
-LLM Service (Llama 3.x via HuggingFace Router)
-  ↓
-Structured JSON Validation
-  ↓
-PostgreSQL Database
-```
+* Message risk scoring
+* Crisis override gate (LLM bypass on high risk)
+* Structured prompt construction
+* Inference via Meta-Llama-3.2-3B-Instruct
+* JSON schema validation
+* Safe fallback mechanism
 
-Every request is validated against the authenticated user before accessing conversation data, ensuring strict data isolation.
+---
+
+### 🗄 Persistent Conversation Storage
+
+* Managed PostgreSQL (Render Cloud)
+* User-to-conversation relational mapping
+* Emotion classification tracking
+* Risk score metadata
+* Timestamp-based resurfacing
+
+---
+
+### ☁ Cloud-Native Deployment
+
+* Docker containerization
+* Gunicorn production WSGI server
+* Render managed hosting
+* GitHub auto-deployment integration
+* 12-Factor environment configuration
 
 ---
 
@@ -128,6 +131,7 @@ Every request is validated against the authenticated user before accessing conve
 
 * id
 * username
+* email
 * password_hash
 * created_at
 
@@ -141,129 +145,105 @@ Every request is validated against the authenticated user before accessing conve
 ### Messages
 
 * id
-* conversation_id (Foreign Key)
+* conversation_id (Foreign Key → Conversations)
 * sender (user / assistant)
 * content
 * emotion
 * risk_score
 * created_at
 
-This schema ensures relational integrity, multi-user isolation, and clean separation of responsibilities.
-
 ---
 
 ## 🛠 Technology Stack
 
-| Layer          | Technology                     |
-| -------------- | ------------------------------ |
-| Backend        | Flask                          |
-| Authentication | Flask-Login                    |
-| ORM            | Flask-SQLAlchemy               |
-| Database       | PostgreSQL                     |
-| AI Model       | Llama 3.x (HuggingFace Router) |
-| Configuration  | python-dotenv                  |
-| Frontend       | HTML, CSS, Vanilla JavaScript  |
+| Layer            | Technology                 |
+| ---------------- | -------------------------- |
+| Backend          | Flask                      |
+| Authentication   | Flask-Login                |
+| ORM              | Flask-SQLAlchemy           |
+| Database         | PostgreSQL (Render)        |
+| AI Model         | Meta-Llama-3.2-3B-Instruct |
+| AI Provider      | HuggingFace Router API     |
+| WSGI             | Gunicorn                   |
+| Containerization | Docker                     |
+| Hosting          | Render Cloud               |
+| Version Control  | GitHub                     |
 
 ---
 
-## 📦 Installation
+## ⚙ Environment Configuration
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+HF_TOKEN=your_huggingface_token
+SECRET_KEY=your_secure_secret_key
+PORT=10000
+```
+
+Secrets are never hardcoded and follow 12-Factor principles.
+
+---
+
+## ▶ Local Development
 
 ```bash
 git clone https://github.com/imrcoder07/MindGuard-AI-A-Secure-Crisis-Aware-Mental-Health-Assistant.git
 cd MindGuard-AI-A-Secure-Crisis-Aware-Mental-Health-Assistant
 
 python -m venv venv
-venv\Scripts\activate     # Windows
-# OR
-source venv/bin/activate  # macOS/Linux
-
+source venv/bin/activate
 pip install -r requirements.txt
-```
-
----
-
-## ⚙ Environment Configuration
-
-Create a `.env` file in the project root:
-
-```env
-DATABASE_URL=postgresql+psycopg2://postgres:your_password@localhost:5432/mental_health_ai
-HF_TOKEN=your_huggingface_token
-SECRET_KEY=your_secret_key
-```
-
----
-
-## ▶ Running the Application
-
-```bash
 python app.py
 ```
 
-Open:
+Visit:
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
 
+---
+
+## 🐳 Docker Deployment (Local)
+
+Build:
+
+```bash
+docker build -t mindguard-ai .
 ```
-http://127.0.0.1:5000
+
+Run:
+
+```bash
+docker run -p 10000:10000 --env-file .env mindguard-ai
 ```
 
----
-
-## 🔎 Application Flow
-
-1. User registers and authenticates securely.
-2. A new conversation session is initiated.
-3. Incoming messages are analyzed by the crisis risk engine.
-4. A risk score is assigned.
-5. If high risk:
-
-   * LLM generation is bypassed.
-   * Crisis support response is returned.
-6. Otherwise:
-
-   * Conversation history is structured.
-   * Sent to LLM.
-   * JSON response validated and sanitized.
-7. Message and metadata stored in PostgreSQL.
-8. Conversation timestamp updated for resurfacing logic.
+Access:
+[http://localhost:10000](http://localhost:10000)
 
 ---
 
-## ⚠ Crisis Handling Strategy
+## 🔎 Application Workflow
 
-MindGuard AI includes a dedicated safety layer that:
-
-* Detects crisis-sensitive language
-* Assigns structured risk levels
-* Prevents unsafe model outputs
-* Enforces controlled response templates
-
-This ensures responsible AI behavior rather than blind generative output.
+1. User authenticates securely.
+2. Conversation ownership validated.
+3. Message passes through Crisis Risk Engine.
+4. Risk score is calculated.
+5. High risk → LLM bypass → Safe crisis response.
+6. Low/medium risk → Structured prompt → LLM inference.
+7. JSON response validated.
+8. Data persisted in PostgreSQL.
+9. Clean response returned to UI.
 
 ---
 
-## 🔐 Security Considerations
+## 🔐 Security Principles
 
 * Secure password hashing
-* Environment variable secret isolation
-* Route-level conversation validation
-* Database-level user isolation
-* JSON output schema enforcement
-* API failure fallback handling
-* High-risk override protection
-
-The system prioritizes privacy, responsible AI constraints, and secure multi-user interaction.
-
----
-
-## 📈 Future Enhancements
-
-* Emotion analytics dashboard
-* User sentiment trends
-* Admin monitoring tools
-* Docker containerization
-* CI/CD integration
-* Audit logging system
-* Model fine-tuning
+* Email normalization & validation
+* Zero-trust conversation ownership
+* Environment-based secret isolation
+* AI response validation guard
+* Managed cloud database security
 
 ---
 
@@ -271,19 +251,13 @@ The system prioritizes privacy, responsible AI constraints, and secure multi-use
 
 **Islam**
 B.Tech – Computer Science & Engineering
+
 GitHub: [https://github.com/imrcoder07](https://github.com/imrcoder07)
 LinkedIn: [https://linkedin.com/in/islam07](https://linkedin.com/in/islam07)
 
 ---
 
-## ⭐ Support
-
-If you find this project insightful or useful, consider giving it a ⭐ on GitHub.
-
----
-
 ## ⚠ Disclaimer
 
-MindGuard AI provides AI-assisted conversational support and does not replace licensed medical or psychological professionals. For serious mental health concerns, consult qualified professionals or emergency services.
-
+MindGuard AI provides AI-assisted conversational support and does not replace licensed medical or psychological professionals. For serious mental health concerns, consult qualified healthcare professionals or emergency services.
 
