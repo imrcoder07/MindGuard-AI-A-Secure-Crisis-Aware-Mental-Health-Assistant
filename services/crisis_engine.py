@@ -12,7 +12,11 @@ HIGH_RISK_PHRASES = [
     "i don't want to live",
     "harm myself",
     "suicide",
-    "commit suicide"
+    "commit suicide",
+    "take my life",
+    "thinking about suicide",
+    "i should die",
+    "i want to kill myself"
 ]
 
 MODERATE_RISK_PHRASES = [
