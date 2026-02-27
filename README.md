@@ -28,7 +28,7 @@ Deployed on **Render Cloud** using Docker, Gunicorn, and managed PostgreSQL.
 ## Welcome Screen
 
 <p align="center">
-  <img src="images/welcome.png" width="900" alt="Welcome Overlay"/>
+  <img src="images/Welcome.png" width="900" alt="Welcome Overlay"/>
 </p>
 
 ---
@@ -36,7 +36,7 @@ Deployed on **Render Cloud** using Docker, Gunicorn, and managed PostgreSQL.
 ## 💬 Chat Interface
 
 <p align="center">
-  <img src="images/chatbot.png" width="900" alt="Chat Interface"/>
+  <img src="images/Chatbot.png" width="900" alt="Chat Interface"/>
 </p>
 
 ---
