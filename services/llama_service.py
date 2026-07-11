@@ -15,8 +15,8 @@ ENV = os.getenv("ENV", "development")
 # Model Configuration
 # -------------------------------------
 
-PRIMARY_MODEL = "meta-llama/Llama-3.2-3B-Instruct"
-FALLBACK_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+PRIMARY_MODEL = os.getenv("PRIMARY_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+FALLBACK_MODEL = os.getenv("FALLBACK_MODEL", "Qwen/Qwen2.5-7B-Instruct")
 
 MODEL_MAP = {
     "llama": PRIMARY_MODEL,
