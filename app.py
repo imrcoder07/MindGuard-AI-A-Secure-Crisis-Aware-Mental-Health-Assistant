@@ -36,6 +36,23 @@ def create_app():
     # CREATE TABLES
     # ---------------------------
     with app.app_context():
+        # Create the custom enum type safely in PostgreSQL if it doesn't exist.
+        # We do this using a PL/pgSQL block with exception handling to be safe from concurrent race conditions.
+        if "postgresql" in app.config.get("SQLALCHEMY_DATABASE_URI", ""):
+            try:
+                from sqlalchemy import text
+                db.session.execute(text("""
+                    DO $$
+                    BEGIN
+                        CREATE TYPE sender_enum AS ENUM ('user', 'assistant');
+                    EXCEPTION
+                        WHEN duplicate_object THEN NULL;
+                    END $$;
+                """))
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                app.logger.warning(f"Note: sender_enum creation check handled: {e}")
         db.create_all()
 
     # ---------------------------
