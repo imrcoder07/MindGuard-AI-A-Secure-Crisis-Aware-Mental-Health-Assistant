@@ -5,8 +5,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-v1.2.0-blue" />
   <img src="https://img.shields.io/badge/backend-Flask-red" />
-  <img src="https://img.shields.io/badge/database-PostgreSQL-blue" />
-  <img src="https://img.shields.io/badge/ai-Meta--Llama--3.2--3B--Instruct-purple" />
+  <img src="https://img.shields.io/badge/database-Supabase--PostgreSQL-blue" />
+  <img src="https://img.shields.io/badge/ai-Qwen--2.5--7B--Instruct-purple" />
   <img src="https://img.shields.io/badge/deployment-Render-success" />
   <img src="https://img.shields.io/badge/container-Docker-blue" />
   <img src="https://img.shields.io/badge/security-Zero--Trust-brightgreen" />
@@ -19,7 +19,7 @@
 🚀 **Production URL:**
 [https://mindguard-ai-a-secure-crisis-aware.onrender.com](https://mindguard-ai-a-secure-crisis-aware.onrender.com)
 
-Deployed on **Render Cloud** using Docker, Gunicorn, and managed PostgreSQL.
+Deployed on **Render Cloud** using Docker, Gunicorn, and **Supabase PostgreSQL** (managed).
 
 ---
 
@@ -76,7 +76,7 @@ The platform integrates:
 
 ```
 User → Authentication → Crisis Engine → 
-LLM (Meta-Llama-3.2-3B-Instruct via HuggingFace) → 
+LLM (Qwen-2.5-7B-Instruct via HuggingFace) → 
 JSON Validation → PostgreSQL → Response
 ```
 
@@ -99,7 +99,7 @@ JSON Validation → PostgreSQL → Response
 * Message risk scoring
 * Crisis override gate (LLM bypass on high risk)
 * Structured prompt construction
-* Inference via Meta-Llama-3.2-3B-Instruct
+* Inference via Qwen-2.5-7B-Instruct (Configurable)
 * JSON schema validation
 * Safe fallback mechanism
 
@@ -107,7 +107,7 @@ JSON Validation → PostgreSQL → Response
 
 ### 🗄 Persistent Conversation Storage
 
-* Managed PostgreSQL (Render Cloud)
+* Supabase PostgreSQL (managed)
 * User-to-conversation relational mapping
 * Emotion classification tracking
 * Risk score metadata
@@ -161,8 +161,8 @@ JSON Validation → PostgreSQL → Response
 | Backend          | Flask                      |
 | Authentication   | Flask-Login                |
 | ORM              | Flask-SQLAlchemy           |
-| Database         | PostgreSQL (Render)        |
-| AI Model         | Meta-Llama-3.2-3B-Instruct |
+| Database         | PostgreSQL (Supabase)      |
+| AI Model         | Qwen-2.5-7B-Instruct (Configurable) |
 | AI Provider      | HuggingFace Router API     |
 | WSGI             | Gunicorn                   |
 | Containerization | Docker                     |
@@ -178,6 +178,8 @@ Create a `.env` file:
 ```env
 DATABASE_URL=postgresql://user:password@host:5432/dbname
 HF_TOKEN=your_huggingface_token
+PRIMARY_MODEL=Qwen/Qwen2.5-7B-Instruct
+FALLBACK_MODEL=Qwen/Qwen2.5-7B-Instruct
 SECRET_KEY=your_secure_secret_key
 PORT=10000
 ```
